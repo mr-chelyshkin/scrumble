@@ -7,6 +7,7 @@
 package main
 
 import (
+	"github.com/mr-chelyshkin/scrumble/internal/config"
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
 	"github.com/mr-chelyshkin/scrumble/internal/http"
 	"github.com/mr-chelyshkin/scrumble/internal/logger"
@@ -15,14 +16,14 @@ import (
 
 // Injectors from wire.go:
 
-func Init(cfg2 cfg) (daemon.Daemon, func(), error) {
+func Init(cfg config.Config) (daemon.Daemon, func(), error) {
 	context, cleanup := daemon.ProvideContext()
-	config, err := logger.ProvideConfig()
+	loggerConfig, err := logger.ProvideConfig()
 	if err != nil {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	zapLogger, err := logger.ProvideLoggerZap(config)
+	zapLogger, err := logger.ProvideLoggerZap(loggerConfig)
 	if err != nil {
 		cleanup()
 		return daemon.Daemon{}, nil, err

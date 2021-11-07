@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/mr-chelyshkin/scrumble/internal/config"
 	"github.com/mr-chelyshkin/scrumble/internal/stat"
 	"github.com/mr-chelyshkin/scrumble/internal/version"
 
@@ -95,11 +94,11 @@ func (d *Daemon) Run() {
 	os.Exit(exitCodeOk)
 }
 
-func Run(name string, f func(p config.Path) (Daemon, func(), error)) {
+func Run(name string, f func(p string) (Daemon, func(), error)) {
 	cfgPath := flag.String("config", filepath.Join("_config", name, "config.toml"), "config path")
 	flag.Parse()
 
-	app, cleanup, err := f(config.Path{Value: *cfgPath})
+	app, cleanup, err := f( *cfgPath)
 	if err != nil {
 		panic(err)
 	}

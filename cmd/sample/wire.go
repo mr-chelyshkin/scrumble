@@ -4,12 +4,13 @@ package main
 
 import (
 	"github.com/google/wire"
+	"github.com/mr-chelyshkin/scrumble/internal/config"
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
 	"github.com/mr-chelyshkin/scrumble/internal/http"
 
 )
 
-func Init(cfg cfg) (daemon.Daemon, func(), error){
+func Init(cfg config.Config) (daemon.Daemon, func(), error){
 	wire.Build(
 		wire.NewSet(
 			daemon.Set,
