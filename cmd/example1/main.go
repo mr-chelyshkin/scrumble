@@ -1,19 +1,19 @@
-package example1
+package main
 
 import (
+	"github.com/mr-chelyshkin/scrumble/internal/config"
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
-	"github.com/mr-chelyshkin/scrumble/internal/http"
-	"github.com/mr-chelyshkin/scrumble/internal/logger"
-	"github.com/mr-chelyshkin/scrumble/internal/stat"
 )
 
-type cfg struct {
-	LogCfg    logger.Config `mapstructure:"logger" json:"log_cfg"  yaml:"log"`
-	MetrCfg   stat.Config   `mapstructure:"stat"   json:"metr_cfg" yaml:"metrics"`
-	DaemonCfg daemon.Config `mapstructure:"daemon" json:"daemon"   yaml:"daemon" `
-	Http      http.Config   `mapstructure:"http"   json:"http"     yaml:"http"`
+func app(path string) (daemon.Daemon, func(), error) {
+	cfg := config.Config{}
+	if err := config.FromFile(path, cfg); err != nil {
+		panic(err)
+	}
+
+	return Init(cfg)
 }
 
 func main() {
-
+	daemon.Run("qwe", app)
 }
