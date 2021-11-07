@@ -28,7 +28,8 @@ func ProvideConfig() (cfg Config, err error) {
 	// validate
 	// ...
 
-	return
+	cfgToStack := cfg
+	return cfgToStack, nil
 }
 
 // ProvideDaemon initialize and return Daemon object.

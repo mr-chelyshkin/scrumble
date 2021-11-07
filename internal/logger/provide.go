@@ -25,7 +25,8 @@ func ProvideConfig() (cfg Config, err error) {
 	// validate
 	// ...
 
-	return
+	cfgToStack := cfg
+	return cfgToStack, nil
 }
 
 var Set = wire.NewSet(
