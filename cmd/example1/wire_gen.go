@@ -45,7 +45,7 @@ func Init(cfg config.Config) (daemon.Daemon, func(), error) {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	service := http_router.ProvideHttp(http_routerConfig, zapLogger)
+	service := http_router.ProvideHttpRouter(http_routerConfig, zapLogger)
 	daemonDaemon := daemon.ProvideDaemon(context, zapLogger, statStat, daemonConfig, service)
 	return daemonDaemon, func() {
 		cleanup()

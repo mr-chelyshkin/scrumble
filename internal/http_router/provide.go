@@ -15,9 +15,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-// ProvideHttp initialize and return Stat object.
-func ProvideHttp(cfg Config, log *zap.Logger) daemon.Service {
+// ProvideHttpRouter initialize and return Stat object.
+func ProvideHttpRouter(cfg Config, log *zap.Logger) daemon.Service {
 	e := echo.New()
+	e.HideBanner = true
+	e.HidePort = true
 
 	e.GET("/", hello)
 
@@ -30,10 +32,6 @@ func ProvideHttp(cfg Config, log *zap.Logger) daemon.Service {
 }
 
 func hello(c echo.Context) error {
-	for i:=0; i< 10000; i++ {
-		a := i
-		fmt.Println(a)
-	}
 	return c.String(http.StatusOK, "Hello, World!")
 }
 
@@ -67,7 +65,7 @@ func ProvideProbe() stat.Probe {
 }
 
 var Set = wire.NewSet(
-	ProvideHttp,
+	ProvideHttpRouter,
 	ProvideProbe,
 	ProvideConfig,
 )
