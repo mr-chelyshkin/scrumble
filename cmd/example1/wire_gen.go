@@ -9,7 +9,7 @@ package main
 import (
 	"github.com/mr-chelyshkin/scrumble/internal/config"
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
-	"github.com/mr-chelyshkin/scrumble/internal/http"
+	"github.com/mr-chelyshkin/scrumble/internal/http_router"
 	"github.com/mr-chelyshkin/scrumble/internal/logger"
 	"github.com/mr-chelyshkin/scrumble/internal/stat"
 )
@@ -33,19 +33,19 @@ func Init(cfg config.Config) (daemon.Daemon, func(), error) {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	probe := http.ProvideProbe()
+	probe := http_router.ProvideProbe()
 	statStat := stat.ProvideStat(statConfig, zapLogger, probe)
 	daemonConfig, err := daemon.ProvideConfig()
 	if err != nil {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	httpConfig, err := http.ProvideConfig()
+	http_routerConfig, err := http_router.ProvideConfig()
 	if err != nil {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	service := http.ProvideHttp(httpConfig, zapLogger)
+	service := http_router.ProvideHttp(http_routerConfig, zapLogger)
 	daemonDaemon := daemon.ProvideDaemon(context, zapLogger, statStat, daemonConfig, service)
 	return daemonDaemon, func() {
 		cleanup()

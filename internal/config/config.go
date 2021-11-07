@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
-	"github.com/mr-chelyshkin/scrumble/internal/http"
+	"github.com/mr-chelyshkin/scrumble/internal/http_router"
 	"github.com/mr-chelyshkin/scrumble/internal/logger"
 	"github.com/mr-chelyshkin/scrumble/internal/stat"
 
@@ -16,8 +16,8 @@ import (
 type Config struct {
 	Log    logger.Config `mapstructure:"logger" json:"log"    yaml:"log"`
 	Stat   stat.Config   `mapstructure:"stat"   json:"stat"   yaml:"stat"`
-	Daemon daemon.Config `mapstructure:"daemon" json:"daemon" yaml:"daemon"`
-	Http   http.Config   `mapstructure:"http"   json:"http"   yaml:"http"`
+	Daemon daemon.Config      `mapstructure:"daemon" json:"daemon" yaml:"daemon"`
+	Http   http_router.Config `mapstructure:"http"   json:"http"   yaml:"http"`
 }
 
 func FromFile(path string, cfg interface{}) error {

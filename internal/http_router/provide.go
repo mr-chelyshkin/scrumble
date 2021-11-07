@@ -1,4 +1,4 @@
-package http
+package http_router
 
 import (
 	"context"
@@ -22,7 +22,7 @@ func ProvideHttp(cfg Config, log *zap.Logger) daemon.Service {
 	e.GET("/", hello)
 
 	return Service{
-		name: "my_http",
+		name: "example1",
 		cfg:  cfg,
 		log:  log,
 		e:    e,
