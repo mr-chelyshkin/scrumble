@@ -1,0 +1,14 @@
+[daemon]
+no_stat = false
+
+[logger]
+level = "debug"
+
+[stat]
+addr = "127.0.0.1:8081"
+
+[stat.metrics]
+switch_off = false
+
+[http]
+addr = "127.0.0.1:8091"
