@@ -15,5 +15,5 @@ func app(path string) (daemon.Daemon, func(), error) {
 }
 
 func main() {
-	daemon.Run("qwe", app)
+	daemon.Run("example1", app)
 }
