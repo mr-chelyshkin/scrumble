@@ -10,5 +10,5 @@ addr = "127.0.0.1:8081"
 [stat.metrics]
 switch_off = false
 
-[http]
+[http_router]
 addr = "127.0.0.1:8091"

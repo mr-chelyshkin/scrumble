@@ -14,10 +14,10 @@ import (
 )
 
 type Config struct {
-	Log    logger.Config      `mapstructure:"logger" json:"log"    yaml:"log"`
-	Stat   stat.Config        `mapstructure:"stat"   json:"stat"   yaml:"stat"`
-	Daemon daemon.Config      `mapstructure:"daemon" json:"daemon" yaml:"daemon"`
-	Http   http_router.Config `mapstructure:"http"   json:"http"   yaml:"http"`
+	Log        logger.Config      `mapstructure:"logger" json:"log"    yaml:"log"`
+	Stat       stat.Config        `mapstructure:"stat"   json:"stat"   yaml:"stat"`
+	Daemon     daemon.Config      `mapstructure:"daemon" json:"daemon" yaml:"daemon"`
+	HttpRouter http_router.Config `mapstructure:"http"   json:"http"   yaml:"http_router"`
 }
 
 func FromFile(path string, cfg interface{}) error {

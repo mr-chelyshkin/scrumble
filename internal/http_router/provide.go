@@ -3,10 +3,10 @@ package http_router
 import (
 	"context"
 	"fmt"
-	"github.com/mr-chelyshkin/scrumble/internal/daemon"
 	"go.uber.org/zap"
 	"net/http"
 
+	"github.com/mr-chelyshkin/scrumble/internal/daemon"
 	"github.com/mr-chelyshkin/scrumble/internal/stat"
 
 	"github.com/google/wire"
@@ -37,13 +37,13 @@ func hello(c echo.Context) error {
 
 // ProvideConfig initialize and return Service config data.
 func ProvideConfig() (cfg Config, err error) {
-	if err = viper.UnmarshalKey("http", &cfg); err != nil {
+	if err = viper.UnmarshalKey("http_router", &cfg); err != nil {
 		return
 	}
 
 	// validate
 	if cfg.Addr == "" {
-		err = errors.New("config must have 'http.addr' value.")
+		err = errors.New("config must have 'http_router.addr' value.")
 		return
 	}
 
