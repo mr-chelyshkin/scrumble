@@ -61,7 +61,6 @@ func (d *Daemon) startService(ctx context.Context, service Service) {
 
 func (d *Daemon) Run() {
 	log := d.log.Named("app")
-
 	log.Info("Starting", version.LogFields()...)
 
 	if !d.cfg.NoStat {

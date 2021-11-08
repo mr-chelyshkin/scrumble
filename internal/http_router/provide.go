@@ -24,7 +24,7 @@ func ProvideHttpRouter(cfg Config, log *zap.Logger) daemon.Service {
 	e.GET("/", hello)
 
 	return Service{
-		name: "example1",
+		name: "http_router",
 		cfg:  cfg,
 		log:  log,
 		e:    e,

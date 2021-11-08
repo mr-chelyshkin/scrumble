@@ -14,8 +14,8 @@ import (
 )
 
 type Config struct {
-	Log    logger.Config `mapstructure:"logger" json:"log"    yaml:"log"`
-	Stat   stat.Config   `mapstructure:"stat"   json:"stat"   yaml:"stat"`
+	Log    logger.Config      `mapstructure:"logger" json:"log"    yaml:"log"`
+	Stat   stat.Config        `mapstructure:"stat"   json:"stat"   yaml:"stat"`
 	Daemon daemon.Config      `mapstructure:"daemon" json:"daemon" yaml:"daemon"`
 	Http   http_router.Config `mapstructure:"http"   json:"http"   yaml:"http"`
 }
