@@ -3,7 +3,6 @@ package http_router
 import (
 	"context"
 	"fmt"
-	"go.uber.org/zap"
 	"net/http"
 
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
@@ -13,6 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 // ProvideHttpRouter initialize and return Stat object.
