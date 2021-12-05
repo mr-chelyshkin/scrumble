@@ -1,7 +1,6 @@
 package sys
 
 import (
-	"context"
 	"github.com/fsnotify/fsnotify"
 	"os"
 	"os/user"
@@ -68,13 +67,7 @@ func ParseFile(path string, cfg interface{}) error {
 	return nil
 }
 
-func ParseFileOnChange(ctx context.Context, path string, cfg interface{}, validate func(cfg interface{}) error) error {
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	default:
-	}
-
+func ParseFileOnChange(errCh chan error, path string, cfg interface{}, validate func(cfg interface{}) error) error {
 	var read = func(
 		cfg interface{},
 		v *viper.Viper,
@@ -110,7 +103,7 @@ func ParseFileOnChange(ctx context.Context, path string, cfg interface{}, valida
 	ext := strings.TrimPrefix(filepath.Ext(path), ".")
 	file := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 
-	errCh := make(chan error, 1)
+	//errCh := make(chan error, 1)
 	mu := &sync.Mutex{}
 
 	v := viper.New()

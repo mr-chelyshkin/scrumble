@@ -45,8 +45,11 @@ func ProvideHttpRouter(cfg Config, log *zap.Logger, router Router) daemon.Servic
 	return Service{
 		name: router.Name(),
 		cfg:  cfg,
+
 		log:  log,
 		e:    e,
+
+		runThirdParty: router.ThirdParty,
 	}
 }
 

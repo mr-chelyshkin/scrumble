@@ -1,6 +1,9 @@
 package hdfs_proxy
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/pkg/errors"
+)
 
 type Config struct {
 	AclPath string `mapstructure:"ppp" json:"ppp" yaml:"ppp"`
@@ -9,5 +12,5 @@ type Config struct {
 
 func (c Config) validate(cfg interface{}) error {
 	fmt.Println(cfg)
-	return nil
+	return errors.Errorf("Qwerty ERRRORRS")
 }
