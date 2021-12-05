@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/mr-chelyshkin/scrumble/hdfs-proxy/handlers"
 	"github.com/mr-chelyshkin/scrumble/internal/sys"
+	"github.com/pkg/errors"
 )
 
 type HdfsProxy struct {}
@@ -14,7 +15,7 @@ func (hp HdfsProxy) Echo(e *echo.Echo) {
 	e.GET("/", handlers.Hello)
 }
 
-func (hd HdfsProxy) ThirdParty(ctx context.Context) error {
+func (hp HdfsProxy) ThirdParty(ctx context.Context) error {
 	ff := Config{}
 	err := sys.ParseFileOnChange(
 		ctx,
@@ -26,6 +27,9 @@ func (hd HdfsProxy) ThirdParty(ctx context.Context) error {
 		fmt.Println(err)
 	}
 
-	return nil
+	return errors.Errorf("asd")
 }
 
+func (hp HdfsProxy) Name() string {
+	return "dhfs-proxy"
+}

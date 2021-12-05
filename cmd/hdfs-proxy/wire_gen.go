@@ -45,7 +45,7 @@ func Init(cfg hdfs_proxy.Config, router http_router.Router) (daemon.Daemon, func
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	service := http_router.ProvideHttpRouter(context, http_routerConfig, zapLogger, router)
+	service := http_router.ProvideHttpRouter(http_routerConfig, zapLogger, router)
 	daemonDaemon := daemon.ProvideDaemon(context, zapLogger, statStat, daemonConfig, service)
 	return daemonDaemon, func() {
 		cleanup()

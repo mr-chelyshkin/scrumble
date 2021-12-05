@@ -10,6 +10,7 @@ import (
 )
 
 type Router interface {
+	Name() string
 	Echo(e *echo.Echo)
 	ThirdParty(ctx context.Context) error
 }
