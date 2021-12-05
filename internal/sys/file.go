@@ -67,7 +67,7 @@ func ParseFile(path string, cfg interface{}) error {
 	return nil
 }
 
-func ParseFileOnChange(errCh chan error, path string, cfg interface{}, validate func(cfg interface{}) error) {
+func ParseFileOnChange(path string, cfg interface{}, validate func(cfg interface{}) error) error {
 	var read = func(
 		cfg interface{},
 		v *viper.Viper,
@@ -103,6 +103,7 @@ func ParseFileOnChange(errCh chan error, path string, cfg interface{}, validate 
 	ext := strings.TrimPrefix(filepath.Ext(path), ".")
 	file := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 
+	errCh := make(chan error, 1)
 	mu := &sync.Mutex{}
 
 	v := viper.New()
@@ -115,5 +116,5 @@ func ParseFileOnChange(errCh chan error, path string, cfg interface{}, validate 
 		read(cfg, v, ext, mu, errCh, validate)
 	})
 
-	return
+	return <-errCh
 }

@@ -13,21 +13,19 @@ func (hp HdfsProxy) Echo(e *echo.Echo) {
 	e.GET("/", handlers.Hello)
 }
 
-func (hp HdfsProxy) ThirdParty() <- chan error {
+func (hp HdfsProxy) ThirdParty(e chan error) {
 	ff := Config{}
-	errCh := make(chan error, 1)
+
 	fmt.Println("start")
 
 	go func() {
-		sys.ParseFileOnChange(
-			errCh,
+		e <- sys.ParseFileOnChange(
 			"/Users/i.chelyshkin/Desktop/scrumble/_config/hdfs-proxy/other.toml",
 			ff,
 			ff.validate,
 		)
 	}()
 
-	return errCh
 }
 
 func (hp HdfsProxy) Name() string {
