@@ -12,8 +12,9 @@ func app(path string) (daemon.Daemon, func(), error) {
 	if err := sys.ParseFile(path, cfg); err != nil {
 		panic(err)
 	}
+	appRoute := hdfs_proxy.HdfsProxy{}
 
-	return Init(cfg, hdfs_proxy.Route, hdfs_proxy.In)
+	return Init(cfg, appRoute)
 }
 
 func main() {

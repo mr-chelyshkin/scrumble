@@ -9,6 +9,11 @@ import (
 	"go.uber.org/zap"
 )
 
+type Router interface {
+	Echo(e *echo.Echo)
+	ThirdParty(ctx context.Context) error
+}
+
 type Service struct {
 	name string
 	cfg  Config

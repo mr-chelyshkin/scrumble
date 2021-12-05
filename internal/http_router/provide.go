@@ -29,9 +29,9 @@ func setEchoLogger(echoLogger echo.Logger, zapLogger *zap.Logger) {
 }
 
 // ProvideHttpRouter initialize and return Stat object.
-func ProvideHttpRouter(ctx context.Context, cfg Config, log *zap.Logger, appRoute func(e *echo.Echo), In func(ctx context.Context)) daemon.Service {
+func ProvideHttpRouter(ctx context.Context, cfg Config, log *zap.Logger, router Router) daemon.Service {
 	go func() {
-		In(ctx)
+		_ = router.ThirdParty(ctx)
 	}()
 
 	e := echo.New()
@@ -43,8 +43,7 @@ func ProvideHttpRouter(ctx context.Context, cfg Config, log *zap.Logger, appRout
 	e.Use(custom_middleware.RequestLogger(log))
 
 	setEchoLogger(e.Logger, log)
-	appRoute(e)
-
+	router.Echo(e)
 
 	return Service{
 		name: "http_router",

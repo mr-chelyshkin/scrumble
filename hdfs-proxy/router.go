@@ -8,11 +8,13 @@ import (
 	"github.com/mr-chelyshkin/scrumble/internal/sys"
 )
 
-func Route(e *echo.Echo) {
+type HdfsProxy struct {}
+
+func (hp HdfsProxy) Echo(e *echo.Echo) {
 	e.GET("/", handlers.Hello)
 }
 
-func In(ctx context.Context)  {
+func (hd HdfsProxy) ThirdParty(ctx context.Context) error {
 	ff := Config{}
 	err := sys.ParseFileOnChange(
 		ctx,
@@ -23,4 +25,7 @@ func In(ctx context.Context)  {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	return nil
 }
+

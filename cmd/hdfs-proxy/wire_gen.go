@@ -7,8 +7,6 @@
 package main
 
 import (
-	"context"
-	"github.com/labstack/echo/v4"
 	"github.com/mr-chelyshkin/scrumble/hdfs-proxy"
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
 	"github.com/mr-chelyshkin/scrumble/internal/http_router"
@@ -18,8 +16,8 @@ import (
 
 // Injectors from wire.go:
 
-func Init(cfg hdfs_proxy.Config, route func(e *echo.Echo), in func(ctx context.Context)) (daemon.Daemon, func(), error) {
-	contextContext, cleanup := daemon.ProvideContext()
+func Init(cfg hdfs_proxy.Config, router http_router.Router) (daemon.Daemon, func(), error) {
+	context, cleanup := daemon.ProvideContext()
 	config, err := logger.ProvideConfig()
 	if err != nil {
 		cleanup()
@@ -47,8 +45,8 @@ func Init(cfg hdfs_proxy.Config, route func(e *echo.Echo), in func(ctx context.C
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	service := http_router.ProvideHttpRouter(contextContext, http_routerConfig, zapLogger, route, in)
-	daemonDaemon := daemon.ProvideDaemon(contextContext, zapLogger, statStat, daemonConfig, service)
+	service := http_router.ProvideHttpRouter(context, http_routerConfig, zapLogger, router)
+	daemonDaemon := daemon.ProvideDaemon(context, zapLogger, statStat, daemonConfig, service)
 	return daemonDaemon, func() {
 		cleanup()
 	}, nil
