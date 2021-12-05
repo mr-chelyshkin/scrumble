@@ -105,7 +105,6 @@ func ParseFileOnChange(errCh chan <- error, path string, cfg interface{}, valida
 	ext := strings.TrimPrefix(filepath.Ext(path), ".")
 	file := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 
-	//errCh := make(chan error, 1)
 	mu := &sync.Mutex{}
 
 	v := viper.New()

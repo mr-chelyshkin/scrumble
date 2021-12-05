@@ -1,7 +1,6 @@
 package hdfs_proxy
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/mr-chelyshkin/scrumble/hdfs-proxy/handlers"
 	"github.com/mr-chelyshkin/scrumble/internal/sys"
@@ -15,8 +14,6 @@ func (hp HdfsProxy) Echo(e *echo.Echo) {
 
 func (hp HdfsProxy) ThirdParty(e chan <- error) {
 	ff := Config{}
-
-	fmt.Println("start")
 
 	go func() {
 		sys.ParseFileOnChange(

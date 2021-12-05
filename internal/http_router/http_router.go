@@ -38,7 +38,6 @@ func (s Service) Start(ctx context.Context) error {
 			case err := <-thirdPartyErr:
 				s.log.Error("ThirdParty error", zap.Error(err), zap.String("app", s.name))
 			default:
-
 			}
 		}
 	}()
