@@ -2,7 +2,7 @@
 no_stat = false
 
 [logger]
-level = "debug"
+level = "DEBUG"
 
 [stat]
 addr = "127.0.0.1:8081"

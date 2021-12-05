@@ -23,7 +23,6 @@ func (s Service) Start(ctx context.Context) error {
 	if err := s.e.Start(s.cfg.Addr); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		return err
 	}
-
 	return nil
 }
 

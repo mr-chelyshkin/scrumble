@@ -2,26 +2,49 @@ package http_router
 
 import (
 	"context"
-	"fmt"
-	"net/http"
-
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
+	"github.com/mr-chelyshkin/scrumble/internal/http_router/custom_middleware"
 	"github.com/mr-chelyshkin/scrumble/internal/stat"
+	"go.uber.org/zap/zapcore"
 
 	"github.com/google/wire"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
+func setEchoLogger(echoLogger echo.Logger, zapLogger *zap.Logger) {
+	switch {
+	case zapLogger.Core().Enabled(zapcore.DebugLevel):
+		echoLogger.SetLevel(1)
+	case zapLogger.Core().Enabled(zapcore.InfoLevel):
+		echoLogger.SetLevel(2)
+	case zapLogger.Core().Enabled(zapcore.WarnLevel):
+		echoLogger.SetLevel(3)
+	case zapLogger.Core().Enabled(zapcore.ErrorLevel):
+		echoLogger.SetLevel(4)
+	}
+}
+
 // ProvideHttpRouter initialize and return Stat object.
-func ProvideHttpRouter(cfg Config, log *zap.Logger) daemon.Service {
+func ProvideHttpRouter(ctx context.Context, cfg Config, log *zap.Logger, appRoute func(e *echo.Echo), In func(ctx context.Context)) daemon.Service {
+	go func() {
+		In(ctx)
+	}()
+
 	e := echo.New()
 	e.HideBanner = true
 	e.HidePort = true
+	//e.Logger =
 
-	e.GET("/", hello)
+	e.Use(middleware.RequestID())
+	e.Use(custom_middleware.RequestLogger(log))
+
+	setEchoLogger(e.Logger, log)
+	appRoute(e)
+
 
 	return Service{
 		name: "http_router",
@@ -29,10 +52,6 @@ func ProvideHttpRouter(cfg Config, log *zap.Logger) daemon.Service {
 		log:  log,
 		e:    e,
 	}
-}
-
-func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
 }
 
 // ProvideConfig initialize and return Service config data.
@@ -54,11 +73,9 @@ func ProvideConfig() (cfg Config, err error) {
 func ProvideProbe() stat.Probe {
 	return stat.Probe{
 		Readness: func(ctx context.Context) error {
-			fmt.Println("READNESS")
 			return nil
 		},
 		Liveness: func(ctx context.Context) error {
-			fmt.Println("LIVENESS")
 			return nil
 		},
 	}

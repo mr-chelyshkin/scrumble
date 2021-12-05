@@ -73,7 +73,6 @@ func (d *Daemon) Run() {
 	go func() {
 		// Guaranteed way to kill application.
 		<-d.ctx.Done()
-
 		// Context is canceled, giving application time to shut down gracefully.
 		d.log.Info("Waiting for application shutdown")
 		time.Sleep(watchdogTimeout)
@@ -97,7 +96,7 @@ func Run(name string, f func(p string) (Daemon, func(), error)) {
 	cfgPath := flag.String("config", filepath.Join("_config", name, "config.toml"), "config path")
 	flag.Parse()
 
-	app, cleanup, err := f( *cfgPath)
+	app, cleanup, err := f(*cfgPath)
 	if err != nil {
 		panic(err)
 	}

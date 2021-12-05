@@ -7,7 +7,9 @@
 package main
 
 import (
-	"github.com/mr-chelyshkin/scrumble/internal/config"
+	"context"
+	"github.com/labstack/echo/v4"
+	"github.com/mr-chelyshkin/scrumble/hdfs-proxy"
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
 	"github.com/mr-chelyshkin/scrumble/internal/http_router"
 	"github.com/mr-chelyshkin/scrumble/internal/logger"
@@ -16,14 +18,14 @@ import (
 
 // Injectors from wire.go:
 
-func Init(cfg config.Config) (daemon.Daemon, func(), error) {
-	context, cleanup := daemon.ProvideContext()
-	loggerConfig, err := logger.ProvideConfig()
+func Init(cfg hdfs_proxy.Config, route func(e *echo.Echo), in func(ctx context.Context)) (daemon.Daemon, func(), error) {
+	contextContext, cleanup := daemon.ProvideContext()
+	config, err := logger.ProvideConfig()
 	if err != nil {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	zapLogger, err := logger.ProvideLoggerZap(loggerConfig)
+	zapLogger, err := logger.ProvideLoggerZap(config)
 	if err != nil {
 		cleanup()
 		return daemon.Daemon{}, nil, err
@@ -45,8 +47,8 @@ func Init(cfg config.Config) (daemon.Daemon, func(), error) {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	service := http_router.ProvideHttpRouter(http_routerConfig, zapLogger)
-	daemonDaemon := daemon.ProvideDaemon(context, zapLogger, statStat, daemonConfig, service)
+	service := http_router.ProvideHttpRouter(contextContext, http_routerConfig, zapLogger, route, in)
+	daemonDaemon := daemon.ProvideDaemon(contextContext, zapLogger, statStat, daemonConfig, service)
 	return daemonDaemon, func() {
 		cleanup()
 	}, nil
