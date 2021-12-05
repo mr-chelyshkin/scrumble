@@ -13,9 +13,11 @@ func (hp HdfsProxy) Echo(e *echo.Echo) {
 	e.GET("/", handlers.Hello)
 }
 
-func (hp HdfsProxy) ThirdParty(errCh chan error) {
+func (hp HdfsProxy) ThirdParty() <- chan error {
 	ff := Config{}
+	errCh := make(chan error, 1)
 	fmt.Println("start")
+
 	go func() {
 		sys.ParseFileOnChange(
 			errCh,
@@ -25,7 +27,7 @@ func (hp HdfsProxy) ThirdParty(errCh chan error) {
 		)
 	}()
 
-
+	return errCh
 }
 
 func (hp HdfsProxy) Name() string {
