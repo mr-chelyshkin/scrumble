@@ -7,13 +7,13 @@ import (
 	"github.com/mr-chelyshkin/scrumble/internal/sys"
 )
 
-type HdfsProxy struct {}
+type App struct {}
 
-func (hp HdfsProxy) Echo(e *echo.Echo) {
+func (a App) Echo(e *echo.Echo) {
 	e.GET("/", handlers.Hello)
 }
 
-func (hp HdfsProxy) ThirdParty(e chan <- error) {
+func (a App) ThirdParty(e chan <- error) {
 	ff := Config{}
 
 	go func() {
@@ -27,10 +27,10 @@ func (hp HdfsProxy) ThirdParty(e chan <- error) {
 
 }
 
-func (hp HdfsProxy) Name() string {
+func (a App) Name() string {
 	return "dhfs-proxy"
 }
 
-func (hp HdfsProxy) Utils(ctx context.Context) error {
+func (a App) Utils(ctx context.Context) error {
 	return nil
 }

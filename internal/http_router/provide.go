@@ -29,7 +29,7 @@ func setEchoLogger(echoLogger echo.Logger, zapLogger *zap.Logger) {
 }
 
 // ProvideHttpRouter initialize and return Stat object.
-func ProvideHttpRouter(cfg Config, log *zap.Logger, router Router) daemon.Service {
+func ProvideHttpRouter(cfg Config, log *zap.Logger, app AppHttpRouter) daemon.Service {
 	e := echo.New()
 	e.HidePort = true
 	e.HideBanner = true
@@ -40,16 +40,16 @@ func ProvideHttpRouter(cfg Config, log *zap.Logger, router Router) daemon.Servic
 	e.Use(custom_middleware.RequestLogger(log))
 
 	setEchoLogger(e.Logger, log)
-	router.Echo(e)
+	app.Echo(e)
 
 	return Service{
-		name: router.Name(),
+		name: app.Name(),
 		cfg:  cfg,
 
 		log:  log,
 		e:    e,
 
-		runThirdParty: router.ThirdParty,
+		runThirdParty: app.ThirdParty,
 	}
 }
 

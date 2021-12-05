@@ -7,16 +7,16 @@
 package main
 
 import (
-	"github.com/mr-chelyshkin/scrumble/hdfs-proxy"
 	"github.com/mr-chelyshkin/scrumble/internal/daemon"
-	"github.com/mr-chelyshkin/scrumble/internal/http_router"
 	"github.com/mr-chelyshkin/scrumble/internal/logger"
+	"github.com/mr-chelyshkin/scrumble/internal/service"
 	"github.com/mr-chelyshkin/scrumble/internal/stat"
+	"github.com/mr-chelyshkin/scrumble/torrent-fetcher"
 )
 
 // Injectors from wire.go:
 
-func Init(cfg hdfs_proxy.Config, router http_router.AppHttpRouter) (daemon.Daemon, func(), error) {
+func Init(cfg torrent_fetcher.Config, app2 service.AppService) (daemon.Daemon, func(), error) {
 	context, cleanup := daemon.ProvideContext()
 	config, err := logger.ProvideConfig()
 	if err != nil {
@@ -33,20 +33,20 @@ func Init(cfg hdfs_proxy.Config, router http_router.AppHttpRouter) (daemon.Daemo
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	probe := http_router.ProvideProbe()
+	probe := service.ProvideProbe()
 	statStat := stat.ProvideStat(statConfig, zapLogger, probe)
 	daemonConfig, err := daemon.ProvideConfig()
 	if err != nil {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	http_routerConfig, err := http_router.ProvideConfig()
+	serviceConfig, err := service.ProvideConfig()
 	if err != nil {
 		cleanup()
 		return daemon.Daemon{}, nil, err
 	}
-	service := http_router.ProvideHttpRouter(http_routerConfig, zapLogger, router)
-	daemonDaemon := daemon.ProvideDaemon(context, zapLogger, statStat, daemonConfig, service)
+	daemonService := service.ProvideService(serviceConfig, zapLogger, app2)
+	daemonDaemon := daemon.ProvideDaemon(context, zapLogger, statStat, daemonConfig, daemonService)
 	return daemonDaemon, func() {
 		cleanup()
 	}, nil
