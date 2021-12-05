@@ -19,7 +19,8 @@ func (hp HdfsProxy) ThirdParty(e chan <- error) {
 	fmt.Println("start")
 
 	go func() {
-		e <- sys.ParseFileOnChange(
+		sys.ParseFileOnChange(
+			e,
 			"/Users/i.chelyshkin/Desktop/scrumble/_config/hdfs-proxy/other.toml",
 			ff,
 			ff.validate,

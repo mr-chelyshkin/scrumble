@@ -1,6 +1,7 @@
 package sys
 
 import (
+	"fmt"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -67,13 +68,13 @@ func ParseFile(path string, cfg interface{}) error {
 	return nil
 }
 
-func ParseFileOnChange(path string, cfg interface{}, validate func(cfg interface{}) error) error {
+func ParseFileOnChange(errCh chan <- error, path string, cfg interface{}, validate func(cfg interface{}) error) {
 	var read = func(
 		cfg interface{},
 		v *viper.Viper,
 		ext string,
 		mu *sync.Mutex,
-		errCh chan error,
+		errCh chan <- error,
 		validate func(cfg interface{}) error,
 	) {
 
@@ -90,6 +91,7 @@ func ParseFileOnChange(path string, cfg interface{}, validate func(cfg interface
 			return
 		}
 		if err := validate(data); err != nil {
+			fmt.Println(err)
 			errCh <- err
 			return
 		}
@@ -103,7 +105,7 @@ func ParseFileOnChange(path string, cfg interface{}, validate func(cfg interface
 	ext := strings.TrimPrefix(filepath.Ext(path), ".")
 	file := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 
-	errCh := make(chan error, 1)
+	//errCh := make(chan error, 1)
 	mu := &sync.Mutex{}
 
 	v := viper.New()
@@ -116,5 +118,5 @@ func ParseFileOnChange(path string, cfg interface{}, validate func(cfg interface
 		read(cfg, v, ext, mu, errCh, validate)
 	})
 
-	return <-errCh
+	//return <-errCh
 }
