@@ -13,7 +13,7 @@ type Router interface {
 	Name() string
 	Echo(e *echo.Echo)
 
-	ThirdParty(chan error)
+	ThirdParty(chan <- error)
 }
 
 type Service struct {
@@ -23,7 +23,7 @@ type Service struct {
 	log  *zap.Logger
 	e    *echo.Echo
 
-	runThirdParty func(chan error)
+	runThirdParty func(chan <- error)
 }
 
 func (s Service) Start(ctx context.Context) error {
@@ -31,6 +31,8 @@ func (s Service) Start(ctx context.Context) error {
 
 	thirdPartyErr := make(chan error, 1)
 	go func() {
+		s.runThirdParty(thirdPartyErr)
+
 		for {
 			select {
 			case err := <-thirdPartyErr:
@@ -40,10 +42,6 @@ func (s Service) Start(ctx context.Context) error {
 			}
 		}
 	}()
-	go func() {
-		s.runThirdParty(thirdPartyErr)
-	}()
-
 
 	if err := s.e.Start(s.cfg.Addr); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		return err

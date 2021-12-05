@@ -13,7 +13,7 @@ func (hp HdfsProxy) Echo(e *echo.Echo) {
 	e.GET("/", handlers.Hello)
 }
 
-func (hp HdfsProxy) ThirdParty(e chan error) {
+func (hp HdfsProxy) ThirdParty(e chan <- error) {
 	ff := Config{}
 
 	fmt.Println("start")

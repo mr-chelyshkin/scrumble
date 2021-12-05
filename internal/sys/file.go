@@ -1,7 +1,6 @@
 package sys
 
 import (
-	"github.com/fsnotify/fsnotify"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -9,6 +8,7 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
