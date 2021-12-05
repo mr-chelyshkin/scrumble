@@ -13,6 +13,7 @@ type Router interface {
 	Name() string
 	Echo(e *echo.Echo)
 
+	Utils(ctx context.Context) error
 	ThirdParty(chan <- error)
 }
 
@@ -23,6 +24,7 @@ type Service struct {
 	log  *zap.Logger
 	e    *echo.Echo
 
+	runUtils      func(ctx context.Context) error
 	runThirdParty func(chan <- error)
 }
 
@@ -42,6 +44,9 @@ func (s Service) Start(ctx context.Context) error {
 		}
 	}()
 
+	if err := s.runUtils(ctx); err != nil {
+		return err
+	}
 	if err := s.e.Start(s.cfg.Addr); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		return err
 	}
