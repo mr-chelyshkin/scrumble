@@ -18,8 +18,8 @@ func ProvideService(cfg Config, log *zap.Logger, app AppService) daemon.Service 
 		log:  log,
 
 		runThirdParty: app.ThirdParty,
+		runService:    app.Run,
 	}
-
 }
 
 // ProvideConfig initialize and return Service config data.

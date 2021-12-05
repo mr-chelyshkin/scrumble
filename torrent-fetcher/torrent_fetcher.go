@@ -11,3 +11,7 @@ func (a App) Name() string {
 func (a App) ThirdParty(e chan <- error) {
 	return
 }
+
+func (a App) Run() error {
+	return nil
+}

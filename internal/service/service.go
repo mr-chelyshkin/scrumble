@@ -8,6 +8,7 @@ import (
 type AppService interface {
 	Name() string
 
+	Run() error
 	ThirdParty(chan <- error)
 }
 
@@ -18,6 +19,7 @@ type Service struct {
 	log  *zap.Logger
 
 	runThirdParty func(chan <- error)
+	runService    func() error
 }
 
 func (s Service) Start(ctx context.Context) error {
@@ -36,6 +38,9 @@ func (s Service) Start(ctx context.Context) error {
 		}
 	}()
 
+	if err := s.runService(); err != nil {
+		return err
+	}
 	return nil
 }
 
