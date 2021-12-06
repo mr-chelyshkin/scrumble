@@ -7,7 +7,9 @@ import (
 	"github.com/mr-chelyshkin/scrumble/internal/sys"
 )
 
-type App struct {}
+type App struct {
+	cfg Config
+}
 
 func (a App) Echo(e *echo.Echo) {
 	e.GET("/", handlers.Hello)

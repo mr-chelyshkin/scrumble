@@ -11,10 +11,10 @@ import (
 
 func ProvideService(cfg Config, log *zap.Logger, app AppService) daemon.Service {
 
+
 	return Service{
 		name: app.Name(),
 		cfg:  cfg,
-
 		log:  log,
 
 		runThirdParty: app.ThirdParty,
@@ -24,7 +24,7 @@ func ProvideService(cfg Config, log *zap.Logger, app AppService) daemon.Service 
 
 // ProvideConfig initialize and return Service config data.
 func ProvideConfig() (cfg Config, err error) {
-	if err = viper.UnmarshalKey("http_router", &cfg); err != nil {
+	if err = viper.UnmarshalKey("service", &cfg); err != nil {
 		return
 	}
 

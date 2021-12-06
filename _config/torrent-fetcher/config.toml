@@ -1,8 +1,0 @@
-[daemon]
-no_stat = true
-
-[logger]
-level = "DEBUG"
-
-[stat]
-addr = "127.0.0.1:8081"

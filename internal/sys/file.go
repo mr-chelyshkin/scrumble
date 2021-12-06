@@ -64,7 +64,7 @@ func ParseFile(path string, cfg interface{}) error {
 	}); err != nil {
 		return err
 	}
-
+	fmt.Println(viper.AllSettings())
 	return nil
 }
 

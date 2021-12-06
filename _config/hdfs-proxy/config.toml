@@ -1,3 +1,5 @@
+ppp = "asdasd"
+
 [daemon]
 no_stat = false
 
@@ -12,3 +14,4 @@ switch_off = false
 
 [http_router]
 addr = "127.0.0.1:8091"
+

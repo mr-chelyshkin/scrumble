@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	AclPath string `mapstructure:"ppp" json:"ppp" yaml:"ppp"`
+	AclPath string `mapstructure:"ppp" json:"ppp" yaml:"ppp" toml:"ppp"`
 	//Config config.Config
 }
 
